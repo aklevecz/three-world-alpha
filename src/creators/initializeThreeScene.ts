@@ -13,7 +13,7 @@ export default function ({
     0.1,
     1000
   );
-  camera.position.set(-30, 17, 38);
+  camera.position.set(-30, 500, 38);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 

@@ -8,6 +8,7 @@ export const UPDATE_GRAPHICS = "UPDATE_GRAPHICS";
 import createVideoTexture from "./creators/createVideoTexture";
 import createPaintings from "./creators/createPaintings";
 import { Dispatch } from "redux";
+import { Entity } from "./reducers/entities";
 export const UPDATE_CONTROLS = "UPDATE_CONTROLS";
 export const MOVE_FORWARD = "MOVE_FORWARD";
 export const MOVE_BACKWARD = "MOVE_BACKWARD";
@@ -18,6 +19,7 @@ export const STANDING = "STANDING";
 export const UPDATE_ROTATION = "UPDATE_ROTATION";
 export const SET_ENTITIES = "SET_ENTITIES";
 export const SET_FLOORS = "SET_FLOORS";
+export const TRIGGER_ANIMATION = "TRIGGER_ANIMATION";
 
 interface GroupedMesh extends THREE.Mesh {
   groupOffset: THREE.Vector3;
@@ -167,11 +169,15 @@ export const initializeEntities = () => {
     const wallGroup = importedScene.children.filter(
       (group) => group.name === "Walls"
     )[0].children;
-    const boxes: Array<{ box: THREE.Box3; object: THREE.Object3D }> = [];
+    const boxes: Array<{
+      box: THREE.Box3;
+      object: THREE.Object3D;
+      state?: any;
+    }> = [];
     wallGroup.forEach((wall: THREE.Mesh) => {
       const box = new THREE.Box3();
       wall.geometry.computeBoundingBox();
-      boxes.push({ box, object: wall });
+      boxes.push({ box, object: wall, state: { moved: false } });
     });
 
     // Stairs
@@ -204,5 +210,27 @@ export const initializeEntities = () => {
     // Could probably be somewhere else
     const texture = createVideoTexture();
     createPaintings({ importedScene, texture });
+  };
+};
+
+export const triggerAnimation = (entity: Entity) => {
+  return (dispatch: Dispatch) => {
+    const object = entity.object;
+    dispatch({ type: TRIGGER_ANIMATION, payload: { object } });
+    entity.state.moved = true;
+    const start = performance.now();
+    let frame: number;
+    const startingY = object.position.y;
+    const animate = () => {
+      const delta = (performance.now() - start) * 0.00001;
+      const cO = object.position;
+      object.position.lerp(new THREE.Vector3(cO.x, startingY + 5, cO.z), delta);
+      if (delta <= 1) {
+        frame = requestAnimationFrame(animate);
+      } else {
+        cancelAnimationFrame(frame);
+      }
+    };
+    animate();
   };
 };

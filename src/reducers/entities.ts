@@ -2,9 +2,14 @@ import { Action } from "redux";
 import * as THREE from "three";
 import { SET_ENTITIES, SET_FLOORS } from "../actions";
 
+type EntityState = {
+  moved: boolean;
+};
+
 export type Entity = {
   object: THREE.Object3D;
   box: THREE.Box3;
+  state: EntityState;
 };
 
 type EntitiesState = {

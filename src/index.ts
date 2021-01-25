@@ -1,12 +1,14 @@
 import * as THREE from "three";
 import store from "./store";
 import {
-  initializeControls,
   initializeEntities,
   initializeScene,
   initializeTouches,
   STANDING,
+  triggerAnimation,
+  TRIGGER_ANIMATION,
 } from "./actions";
+import { initializeControls } from "./actionz";
 import createAmbientLight from "./creators/createAmbientLight";
 import { Entity } from "./reducers/entities";
 
@@ -112,7 +114,15 @@ const render = () => {
 
     // Check wall collision (walls are tall, but this could also be explicit)
     if (intersections.length > 0) {
-      if (intersections[0].box.max.y - intersections[0].box.min.y > 100) {
+      const fI = intersections[0];
+      if (
+        fI.object.name === "Moving_Wall" &&
+        fI.state &&
+        fI.state.moved === false
+      ) {
+        store.dispatch<any>(triggerAnimation(fI));
+      }
+      if (fI.box.max.y - fI.box.min.y > 100) {
         controls.getObject().position.copy(oldPosition);
       }
     }
@@ -164,6 +174,9 @@ const render = () => {
       if (!standing) store.dispatch({ type: STANDING });
       velocity.y = 0;
       controls.getObject().position.y = visionHeight + floorPosition;
+    }
+    if (controls.getObject().position.y === visionHeight) {
+      controls.getObject().position.set(-30, 500, 38);
     }
     prevTime = time;
   }
