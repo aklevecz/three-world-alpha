@@ -1,6 +1,6 @@
 import { Action } from "redux";
 import * as THREE from "three";
-import { TRIGGER_ANIMATION } from "../actions";
+import { TRIGGER_ANIMATION } from "../actionz";
 
 type AnimationsState = {
   objects: Array<THREE.Object3D>;

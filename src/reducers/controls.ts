@@ -10,7 +10,7 @@ import {
   STANDING,
   UPDATE_CONTROLS,
   UPDATE_ROTATION,
-} from "../actions";
+} from "../actionz";
 
 type ControlsState = {
   moveBackward: boolean;

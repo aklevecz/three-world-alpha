@@ -1,6 +1,6 @@
 import { Action } from "redux";
 import * as THREE from "three";
-import { SET_ENTITIES, SET_FLOORS } from "../actions";
+import { SET_ENTITIES, SET_FLOORS } from "../actionz";
 
 type EntityState = {
   moved: boolean;

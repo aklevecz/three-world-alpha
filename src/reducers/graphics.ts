@@ -1,6 +1,6 @@
 import { Action } from "redux";
 import * as THREE from "three";
-import { INITIALIZE, UPDATE_GRAPHICS } from "../actions";
+import { INITIALIZE, UPDATE_GRAPHICS } from "../actionz";
 
 const initialState = {
   scene: new THREE.Scene(),

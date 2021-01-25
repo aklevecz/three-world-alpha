@@ -1,14 +1,13 @@
 import * as THREE from "three";
 import store from "./store";
 import {
-  initializeEntities,
+  initializeControls,
   initializeScene,
   initializeTouches,
-  STANDING,
+  initializeEntities,
   triggerAnimation,
-  TRIGGER_ANIMATION,
-} from "./actions";
-import { initializeControls } from "./actionz";
+  STANDING,
+} from "./actionz";
 import createAmbientLight from "./creators/createAmbientLight";
 import { Entity } from "./reducers/entities";
 
